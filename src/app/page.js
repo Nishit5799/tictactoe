@@ -6,7 +6,7 @@ import Tictactoeboard from "@/components/Tictactoeboard";
 import { OrbitControls } from "@react-three/drei";
 import Cross from "@/components/Cross";
 import Circle from "@/components/Circle";
-import Winningline from "@/components/Winningline";
+import WinningLine from "@/components/Winningline";
 
 function TicTacToeGame() {
   const [gameState, setGameState] = useState(Array(9).fill(null)); // Track the board state
@@ -128,7 +128,7 @@ function TicTacToeGame() {
           )}
         </group>
 
-        <Winningline highlightIndex={highlightIndex} />
+        <WinningLine highlightIndex={highlightIndex} />
       </Canvas>
     </div>
   );
