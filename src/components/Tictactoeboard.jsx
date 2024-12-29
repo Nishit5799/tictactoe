@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import gsap from "gsap";
 import { RandomizedLight, useGLTF } from "@react-three/drei";
@@ -8,8 +8,21 @@ import SecondText3d from "./SecondPlayerText3d";
 
 export default function Tictactoeboard(props) {
   const { nodes, materials } = useGLTF("/tictactoeboard1.gltf");
+  const [isSmallScreen, setIsSmallScreen] = useState(false); // Track if screen is small
   const group1Ref = useRef();
   const group2Ref = useRef();
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 640); // Tailwind's 'sm' breakpoint
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Check on initial load
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     // Apply GSAP animation to the group
@@ -39,13 +52,17 @@ export default function Tictactoeboard(props) {
       ease: "power1.inOut",
     });
   }, []);
+
+  const groupPosition = isSmallScreen ? [-0.2, -1.5, -1.9] : [-0.2, -0.5, -2.1];
+  const lightPosition = isSmallScreen ? [0, -1, 2] : [0, 5, 10];
   return (
-    <group {...props} dispose={null} scale={3} position={[-0.2, -1.7, -1.8]}>
+    // <group {...props} dispose={null} scale={3} position={[-0.2, -1.7, -1.8]}>
+    <group {...props} dispose={null} scale={3} position={groupPosition}>
       <RandomizedLight
         castShadow
         amount={8}
         frames={100}
-        position={[-5, 5, -10]}
+        position={lightPosition}
       />
 
       <group

@@ -1,12 +1,14 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 
 import Tictactoeboard from "@/components/Tictactoeboard";
 import { OrbitControls } from "@react-three/drei";
 import Cross from "@/components/Cross";
 import Circle from "@/components/Circle";
-import WinningLine from "@/components/Winningline";
+
+import StarsSphere from "@/components/Background";
+import WinLine from "@/components/WinLine";
 
 function TicTacToeGame() {
   const [gameState, setGameState] = useState(Array(9).fill(null)); // Track the board state
@@ -83,23 +85,37 @@ function TicTacToeGame() {
   }, []);
 
   // Define responsive scale and position
-  const groupScale = isSmallScreen ? [0.34, 0.34, 0.34] : [0.35, 0.35, 0.35];
-  const groupPosition = isSmallScreen ? [0.01, -2.2, 0.09] : [0.01, -2.5, 0.09];
+  const yellowScale = isSmallScreen ? [0.35, 0.34, 0.34] : [0.36, 0.35, 0.35];
+  const yellowPosition = isSmallScreen ? [0.01, -2.35, 0] : [0.01, -1.35, -0.2];
+  const cameraPosition = isSmallScreen ? [0, 0.3, 0] : [0, 1.6, 1.2];
+  const maxAzimuthalAngle = isSmallScreen ? -Math.PI / 20 : -Math.PI / 5;
+  const minAzimuthalAngle = isSmallScreen ? Math.PI / 20 : Math.PI / 6;
+  const maxPolarAngle = isSmallScreen ? Math.PI / 8 : Math.PI / 6;
+  const minPolarAngle = isSmallScreen ? Math.PI / 80 : Math.PI / 17;
 
   // Adjust FOV based on screen size
-  const fov = isSmallScreen ? 73 : 50;
+  const fov = isSmallScreen ? 106 : 50;
 
   return (
     <div className="w-full h-screen">
-      <Canvas camera={{ position: [0, 2, 0], fov: fov }}>
-        <OrbitControls />
+      {/* <Canvas camera={{ position: [0, 2, 0], fov: fov }}> */}
+      <Canvas camera={{ position: cameraPosition, fov: fov }}>
+        <OrbitControls
+          enableZoom={false}
+          minAzimuthAngle={maxAzimuthalAngle} // Restrict horizontal rotation (left limit)
+          maxAzimuthAngle={minAzimuthalAngle} // Restrict horizontal rotation (right limit)
+          minPolarAngle={minPolarAngle} // Restrict vertical rotation (down limit)
+          maxPolarAngle={maxPolarAngle} // Restrict vertical rotation (up limit)
+          enableDamping // Smooth rotation
+          dampingFactor={0.1} // Adjust the damping effect
+        />
         <ambientLight intensity={0.5} />
-
+        <StarsSphere />
         <Tictactoeboard />
 
         <group
-          scale={groupScale}
-          position={groupPosition}
+          scale={yellowScale}
+          position={yellowPosition}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           {gameState.map((cell, index) =>
@@ -122,13 +138,13 @@ function TicTacToeGame() {
                 onClick={() => handleCellClick(index)}
               >
                 <planeGeometry args={[0.8, 0.8]} />
-                <meshBasicMaterial transparent opacity={0} />
+                <meshBasicMaterial color={"yellow"} />
               </mesh>
             )
           )}
         </group>
 
-        <WinningLine highlightIndex={highlightIndex} />
+        <WinLine highlightIndex={highlightIndex} />
       </Canvas>
     </div>
   );
