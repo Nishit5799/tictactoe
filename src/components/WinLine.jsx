@@ -99,7 +99,7 @@ const WinLine = ({ highlightIndex }) => {
 
       gsap.fromTo(
         meshRef.current.position,
-        { y: 0, opacity: 0 }, // Start from top position
+        { y: 0.9, opacity: 0 }, // Start from top position
         {
           y: targetPosition[1], // Animate to the final position on Y axis
           duration: 2, // Duration of the position animation
