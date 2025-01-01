@@ -250,7 +250,7 @@ function TicTacToeGame() {
       />
 
       <button
-        className={`absolute bottom-4 left-2 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out ${
+        className={`absolute sm:bottom-4 sm:left-2 bottom-24 left-4 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out ${
           winner || gameState.every((cell) => cell !== null)
             ? "cursor-pointer opacity-100 hover:scale-110"
             : "cursor-not-allowed opacity-50"
@@ -269,7 +269,7 @@ function TicTacToeGame() {
       </button>
 
       {isTimerVisible && (
-        <div className="absolute bottom-4 right-4 text-white bg-black px-4 py-2 rounded-lg z-[1000]">
+        <div className="absolute sm:bottom-4 sm:right-4 bottom-24 right-8 text-white bg-black px-4 py-2 rounded-lg z-[1000]">
           Timer: {timer}s
         </div>
       )}
