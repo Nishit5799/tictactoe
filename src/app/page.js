@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 
 import Tictactoeboard from "@/components/Tictactoeboard";
@@ -20,41 +20,28 @@ function TicTacToeGame() {
   const [highlightIndex, setHighlightIndex] = useState(null); // Highlight the winning line
   const [blinkOpacity, setBlinkOpacity] = useState(1); // Control opacity of planes
   const [isFirstMove, setIsFirstMove] = useState(true); // Track if it's the first move
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false); // Track music state
 
-  // Load sound files
-  const bounceSound = new Audio("/bounce.mp3");
+  // Refs for sound effects
+  const bounceSound = useRef(null);
+  const victorySound = useRef(null);
+  const bgMusic = useRef(null);
 
-  const victorySound = new Audio("/victory.mp3");
+  useEffect(() => {
+    // Initialize sound files in the browser environment
+    bounceSound.current = new Audio("/bounce.mp3");
+    victorySound.current = new Audio("/victory.mp3");
+    bgMusic.current = new Audio("/game.mp3");
+    bgMusic.current.loop = true; // Loop background music
+  }, []);
 
-  // Handle cell click
-  const handleCellClick = (index) => {
-    if (gameState[index] || winner) return; // Prevent overwriting if already clicked or if game is over
-
-    // Stop blinking on first move
-    if (isFirstMove) {
-      setIsFirstMove(false); // Stop blinking
-      setTimeout(() => setBlinkOpacity(0), 500); // Smooth fade-out
-    }
-
-    const newState = [...gameState];
-    newState[index] = isXTurn ? "O" : "X";
-    setGameState(newState);
-    setIsXTurn(!isXTurn);
-    setLastClickedIndex(index); // Track the last clicked index for animation
-    setShouldAnimate(true); // Trigger animation for the current move
-
-    // Play sound based on the current turn
-    if (isXTurn) {
-      bounceSound.play(); // Play circle sound
+  const toggleMusic = () => {
+    if (isMusicPlaying) {
+      bgMusic.current.pause();
     } else {
-      bounceSound.play(); // Play cross sound
+      bgMusic.current.play();
     }
-
-    // Check for a winner after the move
-    checkWinner(newState);
-
-    // Reset animation flag after animation is done (1 second for the bounce)
-    setTimeout(() => setShouldAnimate(false), 1000); // 1 second delay for animation duration
+    setIsMusicPlaying(!isMusicPlaying);
   };
 
   const positions = [
@@ -80,6 +67,36 @@ function TicTacToeGame() {
     [2, 4, 6], // Diagonal from top-right
   ];
 
+  const handleCellClick = (index) => {
+    if (gameState[index] || winner) return; // Prevent overwriting if already clicked or if game is over
+
+    // Stop blinking on first move
+    if (isFirstMove) {
+      setIsFirstMove(false); // Stop blinking
+      setTimeout(() => setBlinkOpacity(0), 500); // Smooth fade-out
+    }
+
+    const newState = [...gameState];
+    newState[index] = isXTurn ? "O" : "X";
+    setGameState(newState);
+    setIsXTurn(!isXTurn);
+    setLastClickedIndex(index); // Track the last clicked index for animation
+    setShouldAnimate(true); // Trigger animation for the current move
+
+    // Play sound based on the current turn
+    if (isXTurn) {
+      bounceSound.current?.play(); // Play circle sound
+    } else {
+      bounceSound.current?.play(); // Play cross sound
+    }
+
+    // Check for a winner after the move
+    checkWinner(newState);
+
+    // Reset animation flag after animation is done (1 second for the bounce)
+    setTimeout(() => setShouldAnimate(false), 1000); // 1 second delay for animation duration
+  };
+
   const checkWinner = (state) => {
     for (let i = 0; i < winningConditions.length; i++) {
       const [a, b, c] = winningConditions[i];
@@ -88,7 +105,7 @@ function TicTacToeGame() {
         setHighlightIndex(i); // Highlight the appropriate winning line
 
         // Play victory sound
-        victorySound.play();
+        victorySound.current?.play();
         return;
       }
     }
@@ -134,8 +151,8 @@ function TicTacToeGame() {
   const yellowScale = isSmallScreen ? [0.35, 0.34, 0.34] : [0.36, 0.35, 0.35];
   const yellowPosition = isSmallScreen ? [0.01, -2.35, 0] : [0.01, -1.35, -0.2];
   const cameraPosition = isSmallScreen ? [0, 0.3, 0] : [0, 1.6, 1.2];
-  const maxAzimuthalAngle = isSmallScreen ? -Math.PI / 20 : -Math.PI / 5;
-  const minAzimuthalAngle = isSmallScreen ? Math.PI / 20 : Math.PI / 6;
+  // const maxAzimuthalAngle = isSmallScreen ? -Math.PI / 20 : -Math.PI / 5;
+  // const minAzimuthalAngle = isSmallScreen ? Math.PI / 20 : Math.PI / 6;
   const maxPolarAngle = isSmallScreen ? Math.PI / 8 : Math.PI / 6;
   const minPolarAngle = isSmallScreen ? Math.PI / 80 : Math.PI / 17;
 
@@ -157,11 +174,17 @@ function TicTacToeGame() {
         Reset
       </button>
 
+      {/* Music Toggle Button */}
+      <button
+        className="absolute top-16 right-4 px-4 py-2 z-[1000] text-white bg-blue-600 rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
+        onClick={toggleMusic}
+      >
+        {isMusicPlaying ? "Music Off" : "Music On"}
+      </button>
+
       <Canvas camera={{ position: cameraPosition, fov: fov }}>
         <OrbitControls
           enableZoom={false}
-          // minAzimuthAngle={maxAzimuthalAngle} // Restrict horizontal rotation (left limit)
-          // maxAzimuthalAngle={minAzimuthalAngle} // Restrict horizontal rotation (right limit)
           minPolarAngle={minPolarAngle} // Restrict vertical rotation (down limit)
           maxPolarAngle={maxPolarAngle} // Restrict vertical rotation (up limit)
           enableDamping // Smooth rotation
