@@ -1,12 +1,11 @@
 "use client";
-import { useTexture, Environment } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
 
 const Background = () => {
   const sphereRef = useRef();
-  // const texture = useTexture("/star1.jpg");
+
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {

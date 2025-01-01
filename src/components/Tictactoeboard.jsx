@@ -5,6 +5,7 @@ import { RandomizedLight, useGLTF } from "@react-three/drei";
 
 import FirstText3d from "./FirstPlayerText3d";
 import SecondText3d from "./SecondPlayerText3d";
+import BoardDepth from "./BoardDepth";
 
 export default function Tictactoeboard(props) {
   const { nodes, materials } = useGLTF("/tictactoeboard1.gltf");
@@ -56,7 +57,6 @@ export default function Tictactoeboard(props) {
   const groupPosition = isSmallScreen ? [-0.2, -1.5, -1.9] : [-0.2, -0.5, -2.1];
   const lightPosition = isSmallScreen ? [0, -1, 2] : [0, 5, 10];
   return (
-    // <group {...props} dispose={null} scale={3} position={[-0.2, -1.7, -1.8]}>
     <group {...props} dispose={null} scale={3} position={groupPosition}>
       <RandomizedLight
         castShadow
@@ -122,36 +122,17 @@ export default function Tictactoeboard(props) {
         />
       </group>
 
+      <BoardDepth />
       <mesh
-        geometry={nodes.Object_5.geometry}
-        material={materials.material}
-        position={[0.072, -0.285, 0.627]}
-        rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-        scale={[0.441, 0.348, 0.001]}
+        castShadow
+        receiveShadow
+        geometry={nodes.Object_7.geometry}
+        material={materials.material_1}
+        position={[0.072, -0.301, 0.627]}
+        rotation={[0, -Math.PI / 2, 0]}
+        scale={[0.001, 0, 0.002]}
       />
 
-      {/* <mesh
-        geometry={nodes.Object_25.geometry}
-        material={materials.material_9}
-        position={[0.419, -0.318, 0.63]}
-        rotation={[-Math.PI / 2, 0, -3.138]}
-        scale={[0.35, 0.435, 0.001]}
-      />
-      <mesh
-        geometry={nodes.Object_27.geometry}
-        material={materials.material_10}
-        position={[0.419, -0.318, 1.067]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-        scale={[0.35, 0.441, 0.001]}
-      /> */}
-
-      {/* <mesh
-        geometry={nodes.Object_11.geometry}
-        material={materials.material_2}
-        position={[0.069, -0.318, 0.628]}
-        rotation={[-Math.PI / 2, 0, -3.138]}
-        scale={[0.35, 0.441, 0.001]}
-      /> */}
       <mesh
         geometry={nodes.Object_65.geometry}
         material={materials.material_21}
@@ -180,48 +161,7 @@ export default function Tictactoeboard(props) {
         rotation={[-Math.PI / 2, 0, 0]}
         scale={0.001}
       />
-      {/* <mesh
-        geometry={nodes.Object_13.geometry}
-        material={materials.material_3}
-        position={[-0.28, -0.318, 0.629]}
-        rotation={[-Math.PI / 2, 0, -3.138]}
-        scale={[0.35, 0.441, 0.001]}
-      />
-      <mesh
-        geometry={nodes.Object_15.geometry}
-        material={materials.material_4}
-        position={[-0.279, -0.318, 1.067]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-        scale={[0.35, 0.441, 0.001]}
-      /> */}
-      {/* <mesh
-        geometry={nodes.Object_17.geometry}
-        material={materials.material_5}
-        position={[0.07, -0.318, 1.067]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-        scale={[0.35, 0.441, 0.001]}
-      /> */}
-      {/* <mesh
-        geometry={nodes.Object_19.geometry}
-        material={materials.material_6}
-        position={[-0.281, -0.318, 0.192]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-        scale={[0.35, 0.441, 0.001]}
-      /> */}
-      {/* <mesh
-        geometry={nodes.Object_21.geometry}
-        material={materials.material_7}
-        position={[0.068, -0.318, 0.192]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-        scale={[0.35, 0.441, 0.001]}
-      /> */}
-      {/* <mesh
-        geometry={nodes.Object_23.geometry}
-        material={materials.material_8}
-        position={[0.418, -0.318, 0.192]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-        scale={[0.35, 0.441, 0.001]}
-      /> */}
+
       <group
         position={[0.334, -0.282, 0.63]}
         rotation={[-Math.PI / 2, 0, 0.9]} // Apply rotation to the entire group
@@ -230,11 +170,11 @@ export default function Tictactoeboard(props) {
       >
         <mesh>
           <boxGeometry args={[0.2, 0.05, 0.05]} />
-          <meshStandardMaterial color="red" metalness={0.4} roughness={0.6} />
+          <meshStandardMaterial color="red" metalness={0.8} roughness={0.2} />
         </mesh>
         <mesh rotation={[0, 0, Math.PI / 2.5]}>
           <boxGeometry args={[0.2, 0.05, 0.05]} />
-          <meshStandardMaterial color="red" metalness={0.4} roughness={0.6} />
+          <meshStandardMaterial color="red" metalness={0.8} roughness={0.2} />
         </mesh>
       </group>
       <FirstText3d />

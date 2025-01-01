@@ -74,12 +74,12 @@ const WinLine = ({ highlightIndex }) => {
     {
       position: topLeftRightBottomPositon,
       rotation: [0, 0, -Math.PI / 4],
-      scale: [3.5, 0.05, 0.1],
+      scale: [3.8, 0.05, 0.1],
     }, // Diagonal TL-BR
     {
       position: topRightLeftBottomPositon,
       rotation: [0, 0, Math.PI / 4],
-      scale: [3.5, 0.05, 0.1],
+      scale: [3.8, 0.05, 0.1],
     }, // Diagonal TR-BL
   ];
 
