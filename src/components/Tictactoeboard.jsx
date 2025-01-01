@@ -130,7 +130,7 @@ export default function Tictactoeboard(props) {
         scale={[0.441, 0.348, 0.001]}
       />
 
-      <mesh
+      {/* <mesh
         geometry={nodes.Object_25.geometry}
         material={materials.material_9}
         position={[0.419, -0.318, 0.63]}
@@ -143,15 +143,15 @@ export default function Tictactoeboard(props) {
         position={[0.419, -0.318, 1.067]}
         rotation={[-Math.PI / 2, 0, -Math.PI]}
         scale={[0.35, 0.441, 0.001]}
-      />
+      /> */}
 
-      <mesh
+      {/* <mesh
         geometry={nodes.Object_11.geometry}
         material={materials.material_2}
         position={[0.069, -0.318, 0.628]}
         rotation={[-Math.PI / 2, 0, -3.138]}
         scale={[0.35, 0.441, 0.001]}
-      />
+      /> */}
       <mesh
         geometry={nodes.Object_65.geometry}
         material={materials.material_21}
@@ -180,7 +180,7 @@ export default function Tictactoeboard(props) {
         rotation={[-Math.PI / 2, 0, 0]}
         scale={0.001}
       />
-      <mesh
+      {/* <mesh
         geometry={nodes.Object_13.geometry}
         material={materials.material_3}
         position={[-0.28, -0.318, 0.629]}
@@ -193,35 +193,35 @@ export default function Tictactoeboard(props) {
         position={[-0.279, -0.318, 1.067]}
         rotation={[-Math.PI / 2, 0, -Math.PI]}
         scale={[0.35, 0.441, 0.001]}
-      />
-      <mesh
+      /> */}
+      {/* <mesh
         geometry={nodes.Object_17.geometry}
         material={materials.material_5}
         position={[0.07, -0.318, 1.067]}
         rotation={[-Math.PI / 2, 0, -Math.PI]}
         scale={[0.35, 0.441, 0.001]}
-      />
-      <mesh
+      /> */}
+      {/* <mesh
         geometry={nodes.Object_19.geometry}
         material={materials.material_6}
         position={[-0.281, -0.318, 0.192]}
         rotation={[-Math.PI / 2, 0, -Math.PI]}
         scale={[0.35, 0.441, 0.001]}
-      />
-      <mesh
+      /> */}
+      {/* <mesh
         geometry={nodes.Object_21.geometry}
         material={materials.material_7}
         position={[0.068, -0.318, 0.192]}
         rotation={[-Math.PI / 2, 0, -Math.PI]}
         scale={[0.35, 0.441, 0.001]}
-      />
-      <mesh
+      /> */}
+      {/* <mesh
         geometry={nodes.Object_23.geometry}
         material={materials.material_8}
         position={[0.418, -0.318, 0.192]}
         rotation={[-Math.PI / 2, 0, -Math.PI]}
         scale={[0.35, 0.441, 0.001]}
-      />
+      /> */}
       <group
         position={[0.334, -0.282, 0.63]}
         rotation={[-Math.PI / 2, 0, 0.9]} // Apply rotation to the entire group

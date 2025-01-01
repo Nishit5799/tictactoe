@@ -151,13 +151,14 @@ function TicTacToeGame() {
   const yellowScale = isSmallScreen ? [0.35, 0.34, 0.34] : [0.36, 0.35, 0.35];
   const yellowPosition = isSmallScreen ? [0.01, -2.35, 0] : [0.01, -1.35, -0.2];
   const cameraPosition = isSmallScreen ? [0, 0.3, 0] : [0, 1.6, 1.2];
-  // const maxAzimuthalAngle = isSmallScreen ? -Math.PI / 20 : -Math.PI / 5;
-  // const minAzimuthalAngle = isSmallScreen ? Math.PI / 20 : Math.PI / 6;
+  const maxAzimuthalAngle = isSmallScreen ? -Math.PI / 20 : -Math.PI / 5;
+  const minAzimuthalAngle = isSmallScreen ? Math.PI / 20 : Math.PI / 6;
   const maxPolarAngle = isSmallScreen ? Math.PI / 8 : Math.PI / 6;
   const minPolarAngle = isSmallScreen ? Math.PI / 80 : Math.PI / 17;
 
   // Adjust FOV based on screen size
-  const fov = isSmallScreen ? 106 : 50;
+  const fov = isSmallScreen ? 106 : 100;
+  const boardPosition = isSmallScreen ? [0, 0.1, 0.2] : [0, 2, 0.7];
 
   return (
     <div className="w-full h-screen relative">
@@ -190,46 +191,48 @@ function TicTacToeGame() {
           enableDamping // Smooth rotation
           dampingFactor={0.1} // Adjust the damping effect
         />
-        <ambientLight intensity={0.5} />
-        <StarsSphere />
-        <Tictactoeboard />
+        <ambientLight intensity={0.1} />
+        <group position={boardPosition}>
+          <StarsSphere />
+          <Tictactoeboard />
 
-        <group
-          scale={yellowScale}
-          position={yellowPosition}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          {gameState.map((cell, index) =>
-            cell === "X" ? (
-              <Cross
-                key={index}
-                position={positions[index]}
-                shouldAnimate={shouldAnimate && lastClickedIndex === index}
-              />
-            ) : cell === "O" ? (
-              <Circle
-                key={index}
-                position={positions[index]}
-                shouldAnimate={shouldAnimate && lastClickedIndex === index}
-              />
-            ) : (
-              <mesh
-                key={index}
-                position={positions[index]}
-                onClick={() => handleCellClick(index)}
-              >
-                <planeGeometry args={[0.8, 0.8]} />
-                <meshBasicMaterial
-                  color={"yellow"}
-                  transparent
-                  opacity={blinkOpacity} // Apply blinking effect
+          <group
+            scale={yellowScale}
+            position={yellowPosition}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            {gameState.map((cell, index) =>
+              cell === "X" ? (
+                <Cross
+                  key={index}
+                  position={positions[index]}
+                  shouldAnimate={shouldAnimate && lastClickedIndex === index}
                 />
-              </mesh>
-            )
-          )}
-        </group>
+              ) : cell === "O" ? (
+                <Circle
+                  key={index}
+                  position={positions[index]}
+                  shouldAnimate={shouldAnimate && lastClickedIndex === index}
+                />
+              ) : (
+                <mesh
+                  key={index}
+                  position={positions[index]}
+                  onClick={() => handleCellClick(index)}
+                >
+                  <planeGeometry args={[0.8, 0.8]} />
+                  <meshBasicMaterial
+                    color={"yellow"}
+                    transparent
+                    opacity={blinkOpacity} // Apply blinking effect
+                  />
+                </mesh>
+              )
+            )}
+          </group>
 
-        <WinLine highlightIndex={highlightIndex} />
+          <WinLine highlightIndex={highlightIndex} />
+        </group>
       </Canvas>
     </div>
   );
