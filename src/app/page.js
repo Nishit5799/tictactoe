@@ -90,14 +90,15 @@ function TicTacToeGame() {
       bounceSound.current?.play(); // Play cross sound
     }
 
-    // Check for a winner after the move
-    checkWinner(newState);
+    // Check for a winner or a tie after the move
+    checkWinnerOrTie(newState);
 
     // Reset animation flag after animation is done (1 second for the bounce)
     setTimeout(() => setShouldAnimate(false), 1000); // 1 second delay for animation duration
   };
 
-  const checkWinner = (state) => {
+  const checkWinnerOrTie = (state) => {
+    // Check for a winner
     for (let i = 0; i < winningConditions.length; i++) {
       const [a, b, c] = winningConditions[i];
       if (state[a] && state[a] === state[b] && state[a] === state[c]) {
@@ -108,6 +109,11 @@ function TicTacToeGame() {
         victorySound.current?.play();
         return;
       }
+    }
+
+    // Check for a tie
+    if (state.every((cell) => cell !== null)) {
+      setWinner("Tie"); // Set the winner to "Tie" for a tie condition
     }
   };
 
@@ -121,7 +127,6 @@ function TicTacToeGame() {
     setIsFirstMove(true); // Reactivate blinking
     setBlinkOpacity(1); // Reset blinking opacity
   };
-
   // Track window size on mount and resize
   useEffect(() => {
     const handleResize = () => {
@@ -165,19 +170,19 @@ function TicTacToeGame() {
       {/* Reset Button */}
       <button
         className={`absolute top-4 right-4 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out ${
-          winner
+          winner || gameState.every((cell) => cell !== null) // Enable if there is a winner or a tie
             ? "cursor-pointer opacity-100 hover:scale-110"
-            : "cursor-not-allowed opacity-50"
+            : "cursor-not-allowed opacity-50 "
         }`}
         onClick={resetGame}
-        disabled={!winner} // Only enable button if there is a winner
+        disabled={!winner && !gameState.every((cell) => cell !== null)} // Enable only if there is a winner or a tie
       >
         Reset
       </button>
 
       {/* Music Toggle Button */}
       <button
-        className="absolute top-16 right-4 px-4 py-2 z-[1000] text-white bg-blue-600 rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
+        className="absolute top-16 right-4 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
         onClick={toggleMusic}
       >
         {isMusicPlaying ? "Music Off" : "Music On"}

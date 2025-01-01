@@ -16,20 +16,20 @@ const WinLine = ({ highlightIndex }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  const topRowPosition = isSmallScreen ? [0.03, 1.15, 1.6] : [0.03, 1.95, 3.85];
+  const topRowPosition = isSmallScreen ? [0.03, 1.21, 1.6] : [0.03, 1.95, 3.85];
   const middleRowPosition = isSmallScreen
-    ? [0.03, 0.16, 1.6]
+    ? [0.03, 0.24, 1.6]
     : [0.03, 0.82, 3.85];
   const bottomRowPosition = isSmallScreen
-    ? [0.03, -0.8, 1.6]
+    ? [0.03, -0.74, 1.6]
     : [0.03, 0.82, 3.85];
 
   const leftColumnPosition = isSmallScreen
-    ? [-1, 0.2, 1.6]
+    ? [-1, 0.27, 1.6]
     : [-1.16, 0.75, 3.85];
 
   const middleColumnPosition = isSmallScreen
-    ? [0, 0.2, 1.6]
+    ? [0.01, 0.27, 1.6]
     : [0.05, 0.75, 3.85];
   const rightColumnPosition = isSmallScreen
     ? [1, 0.2, 1.6]
@@ -38,44 +38,48 @@ const WinLine = ({ highlightIndex }) => {
     ? [0.06, 0.17, 1.2]
     : [0.06, 0.8, 3.85];
   const topRightLeftBottomPositon = isSmallScreen
-    ? [0.03, 0.17, 1.2]
+    ? [0.03, 0.19, 1.2]
     : [0, 0.8, 3.85];
   const lines = [
     {
       position: topRowPosition,
       rotation: [0, 0, 0],
-      scale: [3, 0.05, 0.1],
+      scale: [2.8, 0.05, 0.1],
     }, // Top row
     {
       position: middleRowPosition,
       rotation: [0, 0, 0],
-      scale: [3, 0.05, 0.1],
+      scale: [2.8, 0.05, 0.1],
     }, // Middle row
-    { position: bottomRowPosition, rotation: [0, 0, 0], scale: [3, 0.05, 0.1] }, // Bottom row
+    {
+      position: bottomRowPosition,
+      rotation: [0, 0, 0],
+      scale: [2.8, 0.05, 0.1],
+    }, // Bottom row
     {
       position: leftColumnPosition,
       rotation: [0, 0, Math.PI / 2],
-      scale: [3, 0.05, 0.1],
+      scale: [2.8, 0.05, 0.1],
     }, // Left column
     {
       position: middleColumnPosition,
       rotation: [0, 0, Math.PI / 2],
-      scale: [3, 0.05, 0.1],
+      scale: [2.8, 0.05, 0.1],
     }, // Middle column
     {
       position: rightColumnPosition,
       rotation: [0, 0, Math.PI / 2],
-      scale: [3, 0.05, 0.1],
+      scale: [2.8, 0.05, 0.1],
     }, // Right column
     {
       position: topLeftRightBottomPositon,
       rotation: [0, 0, -Math.PI / 4],
-      scale: [4.2, 0.05, 0.1],
+      scale: [3.5, 0.05, 0.1],
     }, // Diagonal TL-BR
     {
       position: topRightLeftBottomPositon,
       rotation: [0, 0, Math.PI / 4],
-      scale: [4.2, 0.05, 0.1],
+      scale: [3.5, 0.05, 0.1],
     }, // Diagonal TR-BL
   ];
 
