@@ -7,8 +7,8 @@ const Circle = ({ position, shouldAnimate }) => {
     if (shouldAnimate) {
       gsap.fromTo(
         meshRef.current.position,
-        { z: 3 },
-        { z: position[2], duration: 0.5, ease: "bounce.out" }
+        { z: 10 },
+        { z: position[2], duration: 1, ease: "bounce.out" }
       );
     }
   }, [shouldAnimate, position]);

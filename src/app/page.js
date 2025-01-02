@@ -95,7 +95,7 @@ function TicTacToeGame() {
 
     if (isFirstMove) {
       setIsFirstMove(false);
-      setTimeout(() => setBlinkOpacity(0), 500);
+      setTimeout(() => setBlinkOpacity(0), 10);
     }
 
     const newState = [...gameState];
