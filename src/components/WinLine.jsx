@@ -22,7 +22,7 @@ const WinLine = ({ highlightIndex }) => {
     : [0.03, 0.82, 3.85];
   const bottomRowPosition = isSmallScreen
     ? [0.03, -0.74, 1.6]
-    : [0.03, 0.82, 3.85];
+    : [0.03, -0.27, 3.85];
 
   const leftColumnPosition = isSmallScreen
     ? [-1, 0.27, 1.6]

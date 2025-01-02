@@ -7,8 +7,8 @@ import Cross from "@/components/Cross";
 import Circle from "@/components/Circle";
 import StarsSphere from "@/components/Background";
 import WinLine from "@/components/WinLine";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 function TicTacToeGame() {
   const [gameState, setGameState] = useState(Array(9).fill(null));
@@ -21,18 +21,31 @@ function TicTacToeGame() {
   const [blinkOpacity, setBlinkOpacity] = useState(1);
   const [isFirstMove, setIsFirstMove] = useState(true);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const [timer, setTimer] = useState(8);
-  const [isTimerVisible, setIsTimerVisible] = useState(true);
-  const [showPlayerTurn, setShowPlayerTurn] = useState(true);
+  const [timer, setTimer] = useState(30);
+  const turnToastId = useRef(null);
 
-  const toastId = useRef(null);
-  const timerInterval = useRef(null);
-  const blinkInterval = useRef(null);
-
-  // Sound effects
   const bounceSound = useRef(null);
   const victorySound = useRef(null);
   const bgMusic = useRef(null);
+  const tieSound = useRef(null);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    bounceSound.current = new Audio("/bounce.mp3");
+    victorySound.current = new Audio("/victory.mp3");
+    bgMusic.current = new Audio("/game.mp3");
+    tieSound.current = new Audio("/tie.mp3");
+    bgMusic.current.loop = true;
+  }, []);
+
+  const toggleMusic = () => {
+    if (isMusicPlaying) {
+      bgMusic.current.pause();
+    } else {
+      bgMusic.current.play();
+    }
+    setIsMusicPlaying(!isMusicPlaying);
+  };
 
   const positions = [
     [-1, 1, 0],
@@ -58,96 +71,21 @@ function TicTacToeGame() {
   ];
 
   useEffect(() => {
-    bounceSound.current = new Audio("/bounce.mp3");
-    victorySound.current = new Audio("/victory.mp3");
-    bgMusic.current = new Audio("/game.mp3");
-    bgMusic.current.loop = true;
-  }, []);
-
-  useEffect(() => {
-    const updateScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
-    };
-
-    updateScreenSize();
-    window.addEventListener("resize", updateScreenSize);
-
-    return () => {
-      window.removeEventListener("resize", updateScreenSize);
-    };
-  }, []);
-
-  useEffect(() => {
-    blinkInterval.current = setInterval(() => {
-      setBlinkOpacity((prev) => (prev === 1 ? 0 : 1));
-    }, 500);
-
-    return () => clearInterval(blinkInterval.current);
-  }, []);
-
-  const toggleMusic = () => {
-    if (isMusicPlaying) {
-      bgMusic.current.pause();
-    } else {
-      bgMusic.current.play();
+    if (turnToastId.current) {
+      toast.dismiss(turnToastId.current);
     }
-    setIsMusicPlaying(!isMusicPlaying);
-  };
-
-  useEffect(() => {
-    if (winner || gameState.every((cell) => cell !== null)) {
-      if (toastId.current) {
-        toast.dismiss(toastId.current);
-        toastId.current = null;
+    turnToastId.current = toast(
+      isXTurn ? "Player 1's Turn" : "Player 2's Turn",
+      {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "dark",
+        hideProgressBar: true,
+        className: "centered-toast",
+        bodyClassName: "centered-toast-body",
       }
-      setShowPlayerTurn(false);
-      setIsTimerVisible(false);
-      return;
-    }
-
-    const currentPlayer = isXTurn ? "Player 1 (O)" : "Player 2 (X)";
-    toastId.current = toast(`${currentPlayer}'s turn`, {
-      autoClose: false,
-      className: "bg-black text-white",
-    });
-
-    setIsTimerVisible(true);
-    setShowPlayerTurn(true);
-    startTimer();
-
-    return () => stopTimer();
-  }, [isXTurn, winner]);
-
-  const startTimer = () => {
-    setTimer(50);
-    stopTimer();
-
-    timerInterval.current = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          handleTimeoutMove();
-          return 50;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const stopTimer = () => {
-    clearInterval(timerInterval.current);
-  };
-
-  const handleTimeoutMove = () => {
-    if (winner || !gameState.includes(null)) return;
-
-    const availableMoves = gameState
-      .map((cell, index) => (cell === null ? index : null))
-      .filter((index) => index !== null);
-
-    const randomMoveIndex =
-      availableMoves[Math.floor(Math.random() * availableMoves.length)];
-    handleCellClick(randomMoveIndex);
-  };
+    );
+  }, [isXTurn]);
 
   const handleCellClick = (index) => {
     if (gameState[index] || winner) {
@@ -157,6 +95,7 @@ function TicTacToeGame() {
 
     if (isFirstMove) {
       setIsFirstMove(false);
+      setTimeout(() => setBlinkOpacity(0), 500);
     }
 
     const newState = [...gameState];
@@ -168,13 +107,11 @@ function TicTacToeGame() {
 
     bounceSound.current?.play();
 
-    if (toastId.current) {
-      toast.dismiss(toastId.current);
-      toastId.current = null;
-    }
-
     checkWinnerOrTie(newState);
+
     setTimeout(() => setShouldAnimate(false), 1000);
+
+    if (!winner) resetTimer();
   };
 
   const checkWinnerOrTie = (state) => {
@@ -183,34 +120,33 @@ function TicTacToeGame() {
       if (state[a] && state[a] === state[b] && state[a] === state[c]) {
         setWinner(state[a]);
         setHighlightIndex(i);
-
-        toast.success(`${state[a]} wins! 🎉`, { position: "top-center" });
-
+        Swal.fire({
+          title: `Player ${state[a]} wins! 🎉`,
+          width: isSmallScreen ? 300 : 500,
+          padding: "1em",
+          color: "white",
+          background: "rgba(0, 0, 0, 0.6) ",
+          backdrop: `
+            rgba(0,0,123,0.4)
+            url("/cat-nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+        });
         victorySound.current?.play();
-        stopTimer();
-        setIsTimerVisible(false);
-        setShowPlayerTurn(false);
-
-        if (toastId.current) {
-          toast.dismiss(toastId.current);
-          toastId.current = null;
-        }
-
+        clearInterval(timerRef.current);
         return;
       }
     }
 
     if (state.every((cell) => cell !== null)) {
       setWinner("Tie");
-      toast.info("It's a tie! 🤝", { position: "top-center" });
-      stopTimer();
-      setIsTimerVisible(false);
-      setShowPlayerTurn(false);
-
-      if (toastId.current) {
-        toast.dismiss(toastId.current);
-        toastId.current = null;
-      }
+      Swal.fire({
+        title: "It's a tie!",
+        icon: "error",
+      });
+      tieSound.current?.play();
+      clearInterval(timerRef.current);
     }
   };
 
@@ -223,10 +159,67 @@ function TicTacToeGame() {
     setShouldAnimate(false);
     setIsFirstMove(true);
     setBlinkOpacity(1);
-    setIsTimerVisible(true);
-    setShowPlayerTurn(false);
-    stopTimer();
+    resetTimer();
   };
+
+  const resetTimer = () => {
+    clearInterval(timerRef.current);
+    setTimer(30);
+    if (!winner) startTimer();
+  };
+
+  const startTimer = () => {
+    timerRef.current = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer <= 1) {
+          clearInterval(timerRef.current);
+          playRandomMove();
+          return 30;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000);
+  };
+
+  const playRandomMove = () => {
+    const availableMoves = gameState
+      .map((cell, index) => (cell === null ? index : null))
+      .filter((index) => index !== null);
+
+    if (availableMoves.length > 0) {
+      const randomIndex =
+        availableMoves[Math.floor(Math.random() * availableMoves.length)];
+      handleCellClick(randomIndex);
+    }
+  };
+
+  useEffect(() => {
+    startTimer();
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 640);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isFirstMove) {
+      const interval = setInterval(() => {
+        setBlinkOpacity((prev) => (prev === 1 ? 0 : 1));
+      }, 500);
+
+      return () => clearInterval(interval);
+    }
+  }, [isFirstMove]);
 
   const yellowScale = isSmallScreen ? [0.35, 0.34, 0.34] : [0.36, 0.35, 0.35];
   const yellowPosition = isSmallScreen ? [0.01, -2.35, 0] : [0.01, -1.35, -0.2];
@@ -239,18 +232,11 @@ function TicTacToeGame() {
 
   return (
     <div className="w-full h-screen relative">
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        draggable
-        pauseOnHover
-      />
-
+      <div className="absolute bottom-8 right-4 sm:right-12 bg-black text-white px-4 py-2 rounded-md z-[1000]">
+        Timer: {timer}s
+      </div>
       <button
-        className={`absolute sm:bottom-4 sm:left-2 bottom-24 left-4 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out ${
+        className={`absolute bottom-8 left-4 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out ${
           winner || gameState.every((cell) => cell !== null)
             ? "cursor-pointer opacity-100 hover:scale-110"
             : "cursor-not-allowed opacity-50"
@@ -262,17 +248,11 @@ function TicTacToeGame() {
       </button>
 
       <button
-        className="absolute top-16 right-4 px-4 py-2 z-[1000] text-white bg-black rounded-2xl transition-transform duration-300 ease-in-out hover:scale-110 "
+        className="absolute top-20 right-4 sm:right-12 px-4 py-2 z-[1000] text-white bg-black rounded-2xl transition-transform duration-300 ease-in-out hover:scale-110"
         onClick={toggleMusic}
       >
         {isMusicPlaying ? "Music Off" : "Music On"}
       </button>
-
-      {isTimerVisible && (
-        <div className="absolute sm:bottom-4 sm:right-4 bottom-24 right-8 text-white bg-black px-4 py-2 rounded-lg z-[1000]">
-          Timer: {timer}s
-        </div>
-      )}
 
       <Canvas camera={{ position: cameraPosition, fov }}>
         <OrbitControls
@@ -282,7 +262,7 @@ function TicTacToeGame() {
           enableDamping
           dampingFactor={0.1}
         />
-
+        <ambientLight intensity={0.1} />
         <group position={boardPosition}>
           <StarsSphere />
           <Tictactoeboard />

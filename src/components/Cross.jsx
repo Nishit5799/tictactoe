@@ -8,8 +8,8 @@ const Cross = ({ position, shouldAnimate }) => {
     if (shouldAnimate) {
       gsap.fromTo(
         meshRef.current.position,
-        { z: 25 },
-        { z: position[2], duration: 1, ease: "bounce.out" }
+        { z: 3 },
+        { z: position[2], duration: 0.5, ease: "bounce.out" }
       );
     }
   }, [shouldAnimate, position]);
