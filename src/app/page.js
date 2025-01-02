@@ -232,11 +232,11 @@ function TicTacToeGame() {
 
   return (
     <div className="w-full h-screen relative">
-      <div className="absolute bottom-8 right-4 sm:right-12 bg-black text-white px-4 py-2 rounded-md z-[1000]">
+      <div className="absolute bottom-24 right-10 sm:right-12 bg-black text-white px-4 py-2 rounded-md z-[1000]">
         Timer: {timer}s
       </div>
       <button
-        className={`absolute bottom-8 left-4 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out ${
+        className={`absolute bottom-24 left-10 px-4 py-2 z-[1000] text-white bg-black rounded-lg transition-transform duration-300 ease-in-out ${
           winner || gameState.every((cell) => cell !== null)
             ? "cursor-pointer opacity-100 hover:scale-110"
             : "cursor-not-allowed opacity-50"
@@ -248,7 +248,7 @@ function TicTacToeGame() {
       </button>
 
       <button
-        className="absolute top-20 right-4 sm:right-12 px-4 py-2 z-[1000] text-white bg-black rounded-2xl transition-transform duration-300 ease-in-out hover:scale-110"
+        className="absolute top-20 right-10 sm:right-12 px-4 py-2 z-[1000] text-white bg-black rounded-2xl transition-transform duration-300 ease-in-out hover:scale-110"
         onClick={toggleMusic}
       >
         {isMusicPlaying ? "Music Off" : "Music On"}
