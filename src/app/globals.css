@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "JellyBelly";
+  src: url("/JellyBellyFont-Regular.ttf") format("truetype");
+  font-weight: normal; /* or 400 */
+  font-style: normal;
+}
+@font-face {
+  font-family: "ChocoCrunch";
+  src: url("/ChochoCrunch-BF67145608f402e.otf") format("truetype");
+  font-weight: normal; /* or 400 */
+  font-style: normal;
+}
+
 .centered-toast {
   display: flex;
   align-items: center;
