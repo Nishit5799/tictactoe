@@ -6,6 +6,9 @@ import { DoubleSide } from "three";
 import gsap from "gsap";
 import TictactoeText from "./TictactoeText";
 import Link from "next/link";
+import CheckVaultText from "./CheckVaultText";
+import Pvp from "./Pvp";
+import Pvsai from "./Pvsai";
 
 const RotatingSphere = () => {
   const texture = useLoader(TextureLoader, "/bg8.jpg");
@@ -90,7 +93,7 @@ const LandingPage = () => {
       gsap.fromTo(
         playButtonContainerRef.current,
         { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.7, ease: "power2.out", delay: 2 }
+        { scale: 1, opacity: 1, duration: 0.7, ease: "power2.out" }
       );
     }
   }, [showPlayButtonContainer]);
@@ -116,15 +119,24 @@ const LandingPage = () => {
       </button>
 
       {showPlayButtonContainer && (
-        <div
-          ref={playButtonContainerRef}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg w-[80%] sm:w-[40%] h-40 flex items-center justify-center"
-        >
-          <Link href="/maingame">
-            <button className="font-choco px-8 py-4 bg-green-900/60 text-white text-xl rounded-full transition-all duration-500 hover:bg-green-600/60 hover:scale-110">
-              <h1 className="sm:text-xl text-lg w-full h-full">Play Game</h1>
-            </button>
-          </Link>
+        <div className="absolute top-2/3 left-1/2 transform    -translate-x-1/2 -translate-y-1/2  rounded-lg shadow-lg w-[80%] sm:w-[40%] h-[80vh] flex items-center justify-center">
+          <div className="top-1/2 w-full h-full flex flex-col items-center justify-center">
+            <Link href="/maingame" className=" w-[70%]  sm:w-[55%] h-[10vh]">
+              <Canvas>
+                <CheckVaultText />
+              </Canvas>
+            </Link>
+            <Link href="/maingame" className=" w-[70%]  sm:w-[55%] h-[10vh]">
+              <Canvas>
+                <Pvp />
+              </Canvas>
+            </Link>
+            <Link href="/maingame" className=" w-[70%]  sm:w-[55%] h-[10vh]">
+              <Canvas>
+                <Pvsai />
+              </Canvas>
+            </Link>
+          </div>
         </div>
       )}
     </div>
