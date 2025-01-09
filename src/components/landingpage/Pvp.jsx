@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import gsap from "gsap/all";
 
-export default function CheckVaultText(props) {
+export default function Pvp(props) {
+  const texture = useTexture("/yellow.avif");
+  const { nodes, materials } = useGLTF("/pvp.gltf");
   const groupRef = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const { nodes, materials } = useGLTF("/CheckVaultText.gltf");
-  const texture = useTexture("/blue.jpg");
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 640);
@@ -19,16 +19,15 @@ export default function CheckVaultText(props) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo
       gsap.fromTo(
         groupRef.current.rotation,
-        { y: -0.009 }, // Starting rotation
+        { y: -0.09 }, // Starting rotation
         {
-          y: 0.009, // Ending rotation
-          duration: 3,
+          y: 0.09, // Ending rotation
+          duration: 4,
           repeat: -1, // Repeat indefinitely
           yoyo: true, // Rotate back to starting value
           ease: "cos.inOut", // Smooth ease-in and ease-out
@@ -37,10 +36,7 @@ export default function CheckVaultText(props) {
     }
   }, []);
 
-  const scaleController = isSmallScreen ? 2.5 : 4.2;
-  const xPosition = isSmallScreen
-    ? [-15, -1.256, -3.181]
-    : [-24, -1.256, -3.181];
+  const setScale = isSmallScreen ? 4 : 3.8;
   return (
     <>
       {/* Ambient light for general illumination */}
@@ -48,18 +44,17 @@ export default function CheckVaultText(props) {
 
       {/* Directional light coming from the front */}
       <directionalLight
-        position={[1, 5, 5]} // Positioned in front of the text
+        position={[1, 7, 5]} // Positioned in front of the text
         intensity={7} // Brightness of the light
         color="white" // Light color
       />
-
       <group {...props} ref={groupRef} dispose={null}>
         <mesh
           geometry={nodes.Text.geometry}
-          // position={[-4.134, 0.256, -0.181]}
-          position={xPosition}
-          rotation={[1.55, 0, 0]}
-          scale={scaleController}
+          // position={[-1.561, 0.125, -0.38]}
+          position={[-5.561, -3.125, -0.5]}
+          rotation={[1.5, 0, 0]}
+          scale={setScale}
         >
           <meshStandardMaterial map={texture} metalness={0.7} roughness={0.5} />
         </mesh>
@@ -68,4 +63,4 @@ export default function CheckVaultText(props) {
   );
 }
 
-useGLTF.preload("/CheckVaultText.gltf");
+useGLTF.preload("/pvp.gltf");

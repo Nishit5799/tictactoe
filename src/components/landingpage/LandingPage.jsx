@@ -4,11 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three";
 import { DoubleSide } from "three";
 import gsap from "gsap";
-import TictactoeText from "./TictactoeText";
+import { Text } from "@react-three/drei"; // Import Text from drei
+
 import Link from "next/link";
+import TictactoeText from "./TictactoeText";
 import CheckVaultText from "./CheckVaultText";
 import Pvp from "./Pvp";
 import Pvsai from "./Pvsai";
+import Coin from "./Coin";
 
 const RotatingSphere = () => {
   const texture = useLoader(TextureLoader, "/bg8.jpg");
@@ -47,6 +50,7 @@ const RotatingSphere = () => {
 const LandingPage = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [showPlayButtonContainer, setShowPlayButtonContainer] = useState(false);
+  const [isVaultActive, setIsVaultActive] = useState(false);
   const yTextPosition = isSmallScreen ? 3.5 : 2;
   const buttonRef = useRef();
   const textRef = useRef();
@@ -54,24 +58,26 @@ const LandingPage = () => {
 
   const handleConnectClick = () => {
     if (buttonRef.current && textRef.current) {
-      // Animate Connect To Wallet button fade-out and hide
       gsap.to(buttonRef.current, {
         opacity: 0,
         duration: 2,
         ease: "power2.out",
         onComplete: () => {
           buttonRef.current.style.display = "none";
-          setShowPlayButtonContainer(true); // Show Play Game container
+          setShowPlayButtonContainer(true);
         },
       });
 
-      // Animate TictactoeText position
       gsap.to(textRef.current.position, {
         y: yTextPosition,
         duration: 2,
         ease: "power2.out",
       });
     }
+  };
+
+  const handleVaultClick = () => {
+    setIsVaultActive(true);
   };
 
   useEffect(() => {
@@ -89,7 +95,6 @@ const LandingPage = () => {
 
   useEffect(() => {
     if (showPlayButtonContainer && playButtonContainerRef.current) {
-      // Animate Play Game container scale and fade-in
       gsap.fromTo(
         playButtonContainerRef.current,
         { scale: 0, opacity: 0 },
@@ -108,30 +113,60 @@ const LandingPage = () => {
 
         <RotatingSphere />
         <TictactoeText ref={textRef} />
+        {isVaultActive && <Coin />}
       </Canvas>
 
-      <button
-        ref={buttonRef}
-        onClick={handleConnectClick}
-        className="absolute font-choco top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 sm:px-8 w-[60%] sm:w-fit py-4 bg-green-900/60 text-white text-xl rounded-full transition-all duration-500 hover:bg-green-600/60 hover:scale-110"
-      >
-        <h1 className="sm:text-xl text-lg w-full h-full">Connect To Wallet</h1>
-      </button>
+      {isVaultActive && (
+        <>
+          <div className="absolute sm:top-1/2 top-[47.3vh] sm:left-[60%] left-[80%] transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-md shadow-lg text-center">
+            <p className="sm:text-[3vw] text-[8vw]">
+              &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; $100
+            </p>
+          </div>
+          <div className="absolute top-[60%] cursor-pointer bg-slate-900 sm:left-[55.3%] left-[74%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center">
+            <h1 className="font-choco text-2xl">Deposit</h1>
+          </div>
+          <div className="absolute top-[70%] bg-slate-900 cursor-pointer sm:left-[57%] left-[80%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center">
+            <h1 className="font-choco text-2xl">Withdraw</h1>
+          </div>
+          <div className="absolute top-[80%] bg-slate-900 sm:left-[63%] left-[85%] cursor-pointer mt-5 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center">
+            <h1 className="font-choco text-2xl">Transcation History</h1>
+          </div>
+        </>
+      )}
 
-      {showPlayButtonContainer && (
-        <div className="absolute top-2/3 left-1/2 transform    -translate-x-1/2 -translate-y-1/2  rounded-lg shadow-lg w-[80%] sm:w-[40%] h-[80vh] flex items-center justify-center">
+      {!isVaultActive && (
+        <button
+          ref={buttonRef}
+          onClick={handleConnectClick}
+          className="absolute font-choco top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-2 sm:px-8 w-[60%] sm:w-fit py-4 bg-green-900/60 text-white text-xl rounded-full transition-all duration-500 hover:bg-green-600/60 hover:scale-110"
+        >
+          <h1 className="sm:text-xl text-lg w-full h-full">
+            Connect To Wallet
+          </h1>
+        </button>
+      )}
+
+      {!isVaultActive && showPlayButtonContainer && (
+        <div
+          ref={playButtonContainerRef}
+          className="absolute top-2/3 left-1/2 transform landing bg-slate-500/70 py-10 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-lg w-[75%] sm:w-[20%] flex items-center justify-center"
+        >
           <div className="top-1/2 w-full h-full flex flex-col items-center justify-center">
-            <Link href="/maingame" className=" w-[70%]  sm:w-[55%] h-[10vh]">
+            <div
+              className="w-[70%] vault sm:w-[55%] h-[10vh] cursor-pointer"
+              onClick={handleVaultClick}
+            >
               <Canvas>
                 <CheckVaultText />
               </Canvas>
-            </Link>
-            <Link href="/maingame" className=" w-[70%]  sm:w-[55%] h-[10vh]">
+            </div>
+            <div className="w-[70%] sm:w-[55%] h-[10vh]">
               <Canvas>
                 <Pvp />
               </Canvas>
-            </Link>
-            <Link href="/maingame" className=" w-[70%]  sm:w-[55%] h-[10vh]">
+            </div>
+            <Link href="/maingame" className="w-[70%] sm:w-[55%] h-[10vh]">
               <Canvas>
                 <Pvsai />
               </Canvas>

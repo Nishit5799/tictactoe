@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import gsap from "gsap/all";
 
-export default function Pvsai(props) {
-  const { nodes, materials } = useGLTF("/pvsai.gltf");
-  const texture = useTexture("/blue.jpg");
+export default function CheckVaultText(props) {
   const groupRef = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const { nodes, materials } = useGLTF("/vault.gltf");
+  const texture = useTexture("/blue.jpg");
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 640);
@@ -19,6 +19,7 @@ export default function Pvsai(props) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo
@@ -35,23 +36,30 @@ export default function Pvsai(props) {
       );
     }
   }, []);
-  const setScale = isSmallScreen ? 4 : 3.8;
+
+  const scaleController = isSmallScreen ? 5.5 : 5.2;
+  const xPosition = isSmallScreen
+    ? [-11, -1.256, -3.181]
+    : [-11, -1.256, -3.181];
   return (
     <>
-      <ambientLight intensity={3} color={"white"} />
+      {/* Ambient light for general illumination */}
+      <ambientLight intensity={0.5} />
 
       {/* Directional light coming from the front */}
       <directionalLight
-        position={[1, 7, 5]} // Positioned in front of the text
+        position={[1, 5, 5]} // Positioned in front of the text
         intensity={7} // Brightness of the light
         color="white" // Light color
       />
-      <group ref={groupRef} {...props} dispose={null}>
+
+      <group {...props} ref={groupRef} dispose={null}>
         <mesh
           geometry={nodes.Text.geometry}
-          position={[-6.561, -3.125, -0.38]}
-          rotation={[1.536, 0, 0]}
-          scale={setScale}
+          // position={[-4.134, 0.256, -0.181]}
+          position={xPosition}
+          rotation={[1.55, 0, 0]}
+          scale={scaleController}
         >
           <meshStandardMaterial map={texture} metalness={0.7} roughness={0.5} />
         </mesh>
@@ -60,4 +68,4 @@ export default function Pvsai(props) {
   );
 }
 
-useGLTF.preload("/pvsai.gltf");
+useGLTF.preload("/vault.gltf");

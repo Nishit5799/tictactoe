@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import gsap from "gsap/all";
 
-export default function Pvp(props) {
-  const texture = useTexture("/blue.jpg");
-  const { nodes, materials } = useGLTF("/pvp.gltf");
+export default function Pvsai(props) {
+  const { nodes, materials } = useGLTF("/pvsai.gltf");
+  const texture = useTexture("/yellow.avif");
   const groupRef = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   useEffect(() => {
@@ -35,11 +35,9 @@ export default function Pvp(props) {
       );
     }
   }, []);
-
   const setScale = isSmallScreen ? 4 : 3.8;
   return (
     <>
-      {/* Ambient light for general illumination */}
       <ambientLight intensity={3} color={"white"} />
 
       {/* Directional light coming from the front */}
@@ -48,12 +46,11 @@ export default function Pvp(props) {
         intensity={7} // Brightness of the light
         color="white" // Light color
       />
-      <group {...props} ref={groupRef} dispose={null}>
+      <group ref={groupRef} {...props} dispose={null}>
         <mesh
           geometry={nodes.Text.geometry}
-          // position={[-1.561, 0.125, -0.38]}
-          position={[-5.561, -3.125, -0.38]}
-          rotation={[1.5, 0, 0]}
+          position={[-6.561, -3.125, -1]}
+          rotation={[1.536, 0, 0]}
           scale={setScale}
         >
           <meshStandardMaterial map={texture} metalness={0.7} roughness={0.5} />
@@ -63,4 +60,4 @@ export default function Pvp(props) {
   );
 }
 
-useGLTF.preload("/pvp.gltf");
+useGLTF.preload("/pvsai.gltf");
