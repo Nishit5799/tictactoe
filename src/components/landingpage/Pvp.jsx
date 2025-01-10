@@ -19,6 +19,7 @@ export default function Pvp(props) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  const setScale = isSmallScreen ? 4 : 3.8;
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo
@@ -36,7 +37,6 @@ export default function Pvp(props) {
     }
   }, []);
 
-  const setScale = isSmallScreen ? 4 : 3.8;
   return (
     <>
       {/* Ambient light for general illumination */}

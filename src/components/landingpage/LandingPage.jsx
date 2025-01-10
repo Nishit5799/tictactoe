@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three";
 import { DoubleSide } from "three";
 import gsap from "gsap";
-import { Text } from "@react-three/drei"; // Import Text from drei
 
 import Link from "next/link";
 import TictactoeText from "./TictactoeText";
@@ -51,10 +50,15 @@ const LandingPage = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [showPlayButtonContainer, setShowPlayButtonContainer] = useState(false);
   const [isVaultActive, setIsVaultActive] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [popupTitle, setPopupTitle] = useState("");
+  const [inputValue, setInputValue] = useState("");
+
   const yTextPosition = isSmallScreen ? 3.5 : 2;
   const buttonRef = useRef();
   const textRef = useRef();
   const playButtonContainerRef = useRef();
+  const vaultContainerRef = useRef();
 
   const handleConnectClick = () => {
     if (buttonRef.current && textRef.current) {
@@ -77,7 +81,49 @@ const LandingPage = () => {
   };
 
   const handleVaultClick = () => {
-    setIsVaultActive(true);
+    if (playButtonContainerRef.current) {
+      gsap.to(playButtonContainerRef.current, {
+        scale: 1.2,
+        duration: 0.5,
+        ease: "power2.out",
+        onComplete: () => {
+          gsap.to(playButtonContainerRef.current, {
+            scale: 0,
+            duration: 0.5,
+            ease: "power2.in",
+            onComplete: () => {
+              setIsVaultActive(true);
+              // Delay animation to ensure elements are rendered
+              setTimeout(() => {
+                if (vaultContainerRef.current) {
+                  gsap.fromTo(
+                    Array.from(vaultContainerRef.current.children),
+                    { opacity: 0, y: 20 },
+                    {
+                      opacity: 1,
+                      y: 0,
+                      duration: 0.7,
+                      stagger: 0.2,
+                      ease: "power2.out",
+                    }
+                  );
+                }
+              }, 0);
+            },
+          });
+        },
+      });
+    }
+  };
+
+  const handlePopupOpen = (type) => {
+    setPopupTitle(`Set ${type} Amount`);
+    setIsPopupVisible(true);
+    setInputValue("");
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupVisible(false);
   };
 
   useEffect(() => {
@@ -115,24 +161,29 @@ const LandingPage = () => {
         <TictactoeText ref={textRef} />
         {isVaultActive && <Coin />}
       </Canvas>
-
       {isVaultActive && (
-        <>
-          <div className="absolute sm:top-1/2 top-[47.3vh] sm:left-[60%] left-[80%] transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-md shadow-lg text-center">
-            <p className="sm:text-[3vw] text-[8vw]">
-              &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; $100
+        <div ref={vaultContainerRef}>
+          <div className="absolute sm:top-1/2 top-[50.3vh] sm:left-[57%] left-[80%] transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-md shadow-lg text-center transition-transform duration-300 ease-in-out hover:scale-105">
+            <p className="sm:text-[2vw] text-[8vw] font-choco text-border">
+              $100
             </p>
           </div>
-          <div className="absolute top-[60%] cursor-pointer bg-slate-900 sm:left-[55.3%] left-[74%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center">
-            <h1 className="font-choco text-2xl">Deposit</h1>
+          <div
+            className="absolute top-[60%] cursor-pointer bg-slate-900 sm:left-[54.3%] left-[74%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-transform duration-300 ease-in-out hover:scale-105"
+            onClick={() => handlePopupOpen("Deposit")}
+          >
+            <h1 className="font-choco text-xl">Deposit</h1>
           </div>
-          <div className="absolute top-[70%] bg-slate-900 cursor-pointer sm:left-[57%] left-[80%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center">
-            <h1 className="font-choco text-2xl">Withdraw</h1>
+          <div
+            className="absolute top-[70%] bg-slate-900 cursor-pointer sm:left-[55.5%] left-[80%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-transform duration-300 ease-in-out hover:scale-105"
+            onClick={() => handlePopupOpen("Withdraw")}
+          >
+            <h1 className="font-choco text-xl">Withdraw</h1>
           </div>
-          <div className="absolute top-[80%] bg-slate-900 sm:left-[63%] left-[85%] cursor-pointer mt-5 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center">
-            <h1 className="font-choco text-2xl">Transcation History</h1>
+          <div className="absolute top-[80%] bg-slate-900 sm:left-[61.5%] left-[85%] cursor-pointer sm:mt-5 mt-8 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-transform duration-300 ease-in-out hover:scale-105">
+            <h1 className="font-choco text-xl">Transaction History</h1>
           </div>
-        </>
+        </div>
       )}
 
       {!isVaultActive && (
@@ -171,6 +222,30 @@ const LandingPage = () => {
                 <Pvsai />
               </Canvas>
             </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Popup */}
+      {isPopupVisible && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-50">
+          <div className="bg-white text-black p-6 rounded-lg shadow-lg w-[90%] sm:w-[30%]">
+            <h2 className="text-lg font-bold text-center font-choco">
+              {popupTitle}
+            </h2>
+            <input
+              type="number"
+              className="w-full mt-4 p-2 border rounded-md font-choco"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter amount"
+            />
+            <button
+              onClick={handlePopupClose}
+              className="w-full mt-4 p-2 bg-green-600 font-choco text-white rounded-md hover:bg-green-700 transition duration-300"
+            >
+              Okay
+            </button>
           </div>
         </div>
       )}

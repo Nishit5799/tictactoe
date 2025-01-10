@@ -28,7 +28,7 @@ export default function Coin(props) {
   const coinScale = isSmallScreen ? 0.06 : 0.041;
   return (
     <>
-      <ambientLight intensity={0.1} />
+      <ambientLight intensity={0.1} color="black" />
 
       <group
         ref={group}

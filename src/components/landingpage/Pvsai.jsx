@@ -19,6 +19,7 @@ export default function Pvsai(props) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  const setScale = isSmallScreen ? 4 : 3.8;
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo
@@ -35,7 +36,6 @@ export default function Pvsai(props) {
       );
     }
   }, []);
-  const setScale = isSmallScreen ? 4 : 3.8;
   return (
     <>
       <ambientLight intensity={3} color={"white"} />
