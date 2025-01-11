@@ -48,6 +48,7 @@ const RotatingSphere = () => {
 
 const LandingPage = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [showConnectToWallet, setShowConnectToWallet] = useState(true); // State for Connect to Wallet
   const [showPlayButtonContainer, setShowPlayButtonContainer] = useState(false);
   const [isVaultActive, setIsVaultActive] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -69,6 +70,7 @@ const LandingPage = () => {
         onComplete: () => {
           buttonRef.current.style.display = "none";
           setShowPlayButtonContainer(true);
+          setShowConnectToWallet(false); // Hide the Connect to Wallet button
         },
       });
 
@@ -93,27 +95,17 @@ const LandingPage = () => {
             ease: "power2.in",
             onComplete: () => {
               setIsVaultActive(true);
-              // Delay animation to ensure elements are rendered
-              setTimeout(() => {
-                if (vaultContainerRef.current) {
-                  gsap.fromTo(
-                    Array.from(vaultContainerRef.current.children),
-                    { opacity: 0, y: 20 },
-                    {
-                      opacity: 1,
-                      y: 0,
-                      duration: 0.7,
-                      stagger: 0.2,
-                      ease: "power2.out",
-                    }
-                  );
-                }
-              }, 0);
+              setShowPlayButtonContainer(false); // Hide play buttons when vault is active
             },
           });
         },
       });
     }
+  };
+
+  const handleBackClick = () => {
+    setIsVaultActive(false);
+    setShowPlayButtonContainer(true); // Show play buttons when back is pressed
   };
 
   const handlePopupOpen = (type) => {
@@ -161,6 +153,18 @@ const LandingPage = () => {
         <TictactoeText ref={textRef} />
         {isVaultActive && <Coin />}
       </Canvas>
+
+      {/* Back Button */}
+      {isVaultActive && (
+        <button
+          className="absolute top-4 left-4 bg-gray-800 text-white p-2 rounded shadow hover:bg-gray-700 transition"
+          onClick={handleBackClick}
+        >
+          Back
+        </button>
+      )}
+
+      {/* Vault Content */}
       {isVaultActive && (
         <div ref={vaultContainerRef}>
           <div className="absolute sm:top-1/2 top-[50.3vh] sm:left-[57%] left-[80%] transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-md shadow-lg text-center transition-transform duration-300 ease-in-out hover:scale-105">
@@ -186,7 +190,8 @@ const LandingPage = () => {
         </div>
       )}
 
-      {!isVaultActive && (
+      {/* Connect to Wallet Button */}
+      {showConnectToWallet && (
         <button
           ref={buttonRef}
           onClick={handleConnectClick}
@@ -198,6 +203,7 @@ const LandingPage = () => {
         </button>
       )}
 
+      {/* Play Buttons */}
       {!isVaultActive && showPlayButtonContainer && (
         <div
           ref={playButtonContainerRef}
