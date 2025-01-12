@@ -96,22 +96,22 @@ const Vault = () => {
       )}
 
       {/* Main Content */}
-      <div className="absolute top-1/2 left-1/2 transform landing py-10 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-lg w-[75%] sm:w-[21%] flex items-center justify-center">
+      <div className="absolute top-1/2 sm:left-1/2 left-[60%] transform landing py-10 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-lg w-[75%] sm:w-[21%] flex items-center justify-center">
         <p className="sm:text-[2vw] text-[8vw] font-choco text-border">$100 </p>
       </div>
       <div
-        className="absolute top-[60%] cursor-pointer bg-slate-900 sm:left-[53%] left-[74%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-105"
+        className="absolute top-[60%] cursor-pointer bg-slate-900 sm:left-[53%] left-[70%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-105"
         onClick={() => setPopupType("deposit")}
       >
         <h1 className="font-choco text-xl">Deposit</h1>
       </div>
       <div
-        className="absolute top-[70%] bg-slate-900 cursor-pointer sm:left-[54.4%] left-[80%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-105"
+        className="absolute top-[70%] bg-slate-900 cursor-pointer sm:left-[54.4%] left-[74.7%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-105"
         onClick={() => setPopupType("withdraw")}
       >
         <h1 className="font-choco text-xl">Withdraw</h1>
       </div>
-      <div className="absolute top-[80%] bg-slate-900 sm:left-[60.5%] left-[85%] cursor-pointer sm:mt-5 mt-8 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-105">
+      <div className="absolute top-[80%] bg-slate-900 sm:left-[60.5%] left-[80%] cursor-pointer sm:mt-5 mt-8 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-105">
         <h1 className="font-choco text-xl">Transaction History</h1>
       </div>
     </div>
