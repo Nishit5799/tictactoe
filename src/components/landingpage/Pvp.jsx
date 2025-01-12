@@ -19,7 +19,7 @@ export default function Pvp(props) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  const setScale = isSmallScreen ? 4 : 3.8;
+  const setScale = isSmallScreen ? 3.5 : 3.8;
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo
@@ -52,7 +52,7 @@ export default function Pvp(props) {
         <mesh
           geometry={nodes.Text.geometry}
           // position={[-1.561, 0.125, -0.38]}
-          position={[-5.561, -3.125, -0.5]}
+          position={[-4.561, -3.125, -0.5]}
           rotation={[1.5, 0, 0]}
           scale={setScale}
         >

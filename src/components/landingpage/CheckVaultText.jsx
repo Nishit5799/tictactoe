@@ -23,7 +23,7 @@ export default function CheckVaultText(props) {
   const scaleController = isSmallScreen ? 5.5 : 5.2;
   const xPosition = isSmallScreen
     ? [-11, -1.256, -3.181]
-    : [-11, -1.256, -3.181];
+    : [-9, -1.256, -3.181];
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo

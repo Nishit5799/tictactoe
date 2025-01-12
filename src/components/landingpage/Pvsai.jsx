@@ -19,7 +19,7 @@ export default function Pvsai(props) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  const setScale = isSmallScreen ? 4 : 3.8;
+  const setScale = isSmallScreen ? 3.5 : 3.8;
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo
@@ -49,7 +49,8 @@ export default function Pvsai(props) {
       <group ref={groupRef} {...props} dispose={null}>
         <mesh
           geometry={nodes.Text.geometry}
-          position={[-6.561, -3.125, -1]}
+          // position={[-5.561, -3.125, -1]}
+          position={[-5.2, -3.125, -1]}
           rotation={[1.536, 0, 0]}
           scale={setScale}
         >
