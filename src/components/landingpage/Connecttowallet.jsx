@@ -36,9 +36,9 @@ export default function Connecttowallet(props) {
     };
   }, []);
 
-  const xPosition = isSmallScreen ? [-21, 0, -1.5] : [-12.214, -0.3, -0.038];
+  const xPosition = isSmallScreen ? [-26, -1, -1.5] : [-12.214, -0.3, -0.038];
 
-  const scaleWallet = isSmallScreen ? 3 : 1.7;
+  const scaleWallet = isSmallScreen ? 3.6 : 1.7;
   return (
     <>
       <ambientLight intensity={0.1} />

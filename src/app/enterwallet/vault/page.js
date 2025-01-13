@@ -78,7 +78,7 @@ const Vault = () => {
       {/* Popup */}
       {popupType && (
         <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-white/90 text-black p-8 rounded-xl shadow-lg w-[90%] sm:w-[40%] text-center">
+          <div className="bg-white/90 text-black p-8 rounded-xl shadow-lg w-[94%] sm:w-[40%] text-center">
             <h2 className="font-choco text-2xl mb-4">
               {popupType === "deposit"
                 ? "Set Deposit Amount"
@@ -86,7 +86,7 @@ const Vault = () => {
             </h2>
             <input
               type="number"
-              className="w-full p-3 border font-choco border-gray-300 rounded-md text-lg  mb-4"
+              className="w-full p-2 sm:p-3 border font-choco border-gray-300 rounded-md text-lg  mb-4"
               placeholder="Enter amount"
             />
             <button
