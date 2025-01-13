@@ -1,5 +1,5 @@
 "use client";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three";
 import { DoubleSide } from "three";
@@ -29,6 +29,11 @@ const RotatingSphere = () => {
   }, []);
 
   const setArgs = isSmallScreen ? [300, 60, 400] : [800, 800, 800];
+  useFrame(() => {
+    if (sphereRef.current) {
+      sphereRef.current.rotation.y += 0.0009;
+    }
+  });
 
   return (
     <mesh ref={sphereRef}>

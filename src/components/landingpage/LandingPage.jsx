@@ -174,7 +174,7 @@ const LandingPage = () => {
         <RotatingSphere />
         <TictactoeText animate={false} />
       </Canvas>
-      <div className="absolute left-1/2 transform -translate-x-1/2 top-[60%] sm:w-[32%] sm:h-[15%] w-[100%] h-[35%]   ">
+      <div className="absolute left-1/2 transform -translate-x-1/2 top-[60%] sm:w-[28%] rounded-full sm:h-[15%] w-[80%] h-[5%] bg-slate-900/50 hover:bg-slate-900/90  transition-all duration-300 hover:scale-105  ">
         <Link href="/enterwallet">
           <Canvas>
             <Connecttowallet />
