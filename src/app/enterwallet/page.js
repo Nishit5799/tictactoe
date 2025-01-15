@@ -11,7 +11,7 @@ import Pvsai from "@/components/landingpage/Pvsai";
 import Link from "next/link";
 
 const RotatingSphere = () => {
-  const texture = useLoader(TextureLoader, "/bg8.jpg");
+  const texture = useLoader(TextureLoader, "/mainbg.jpg");
   const sphereRef = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -28,7 +28,8 @@ const RotatingSphere = () => {
     };
   }, []);
 
-  const setArgs = isSmallScreen ? [300, 60, 400] : [800, 800, 800];
+  // const setArgs = isSmallScreen ? [300, 60, 400] : [800, 800, 800];
+  const setArgs = isSmallScreen ? [700, 1000, 1000] : [950, 1500, 1500];
   useFrame(() => {
     if (sphereRef.current) {
       sphereRef.current.rotation.y += 0.0009;
@@ -72,22 +73,22 @@ const WalletPage = () => {
       </Canvas>
 
       <div className="absolute top-2/3 left-1/2 transform landing py-10 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-lg w-[75%] sm:w-[21%] flex items-center justify-center">
-        <div className="top-1/2 w-full h-full flex flex-col items-center justify-center">
-          <div className="w-[70%] vault sm:w-[55%] h-[9.5vh] cursor-pointer">
+        <div className="top-1/2 w-full h-full flex flex-col items-center justify-center ">
+          <div className="w-[70%] vault sm:w-[55%] h-[9.5vh] cursor-pointer  hover:scale-110 transition-all duration:700 ease-in">
             <Link href="/enterwallet/vault">
               <Canvas>
                 <CheckVaultText />
               </Canvas>
             </Link>
           </div>
-          <div className="w-[70%] sm:w-[55%] h-[10vh] cursor-pointer">
+          <div className="w-[70%] sm:w-[55%] h-[10vh] cursor-pointer hover:scale-110 transition-all duration:300">
             <Canvas>
               <Pvp />
             </Canvas>
           </div>
           <Link
             href="/enterwallet/maingame"
-            className="w-[70%] sm:w-[55%] h-[10vh]"
+            className="w-[70%] sm:w-[55%] h-[10vh] hover:scale-110 transition-all duration:300"
           >
             <Canvas>
               <Pvsai />

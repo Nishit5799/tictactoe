@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import gsap from "gsap/all";
 
-export default function CheckVaultText(props) {
+export default function TransactionText(props) {
+  const texture = useTexture("/yellow.avif");
+  const { nodes, materials } = useGLTF("/transactionText.gltf");
   const groupRef = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const { nodes, materials } = useGLTF("/vault.gltf");
-  const texture = useTexture("/red.jpg");
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 640);
@@ -19,19 +19,14 @@ export default function CheckVaultText(props) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const scaleController = isSmallScreen ? 5.5 : 5.2;
-  const xPosition = isSmallScreen
-    ? [-11, -1.256, -3.181]
-    : [-9, -1.256, -3.181];
   useEffect(() => {
     if (groupRef.current) {
       // Animate rotation (Y-axis rotation) with gsap.fromTo
       gsap.fromTo(
         groupRef.current.rotation,
-        { y: -0.09 }, // Starting rotation
+        { y: -0.013 }, // Starting rotation
         {
-          y: 0.09, // Ending rotation
+          y: 0.013, // Ending rotation
           duration: 4,
           repeat: -1, // Repeat indefinitely
           yoyo: true, // Rotate back to starting value
@@ -40,32 +35,34 @@ export default function CheckVaultText(props) {
       );
     }
   }, []);
-
+  const scale = isSmallScreen ? [2.6, 3, 3.6] : [4.7, 2.9, 5.7];
+  const xPosition = isSmallScreen
+    ? [-17.5, -1.141, -0.008]
+    : [-31.145, -1.141, -0.008];
   return (
     <>
-      {/* Ambient light for general illumination */}
-      <ambientLight intensity={0.5} />
-
-      {/* Directional light coming from the front */}
+      <ambientLight intensity={1} color={"white"} />
       <directionalLight
-        position={[1, 5, 5]} // Positioned in front of the text
-        intensity={7} // Brightness of the light
+        position={[1, 7, 5]} // Positioned in front of the text
+        intensity={4} // Brightness of the light
         color="white" // Light color
       />
-
-      <group {...props} ref={groupRef} dispose={null}>
+      <group ref={groupRef} {...props} dispose={null}>
         <mesh
           geometry={nodes.Text.geometry}
-          // position={[-4.134, 0.256, -0.181]}
           position={xPosition}
-          rotation={[1.55, 0, 0]}
-          scale={scaleController}
+          rotation={[Math.PI / 2, 0, 0]}
+          scale={scale}
         >
-          <meshStandardMaterial map={texture} metalness={0.7} roughness={0.5} />
+          <meshStandardMaterial
+            map={texture}
+            metallness={0.7}
+            roughness={0.5}
+          />
         </mesh>
       </group>
     </>
   );
 }
 
-useGLTF.preload("/vault.gltf");
+useGLTF.preload("/transactionText.gltf");

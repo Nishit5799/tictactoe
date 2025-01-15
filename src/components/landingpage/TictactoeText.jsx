@@ -38,7 +38,7 @@ const TictactoeText = forwardRef(({ animate, ...props }, ref) => {
     }
   }, []);
 
-  const yAnimation = isSmallScreen ? 15.8 : 1.8;
+  const yAnimation = isSmallScreen ? 2.8 : 2.8;
   useEffect(() => {
     if (groupRef.current && animate) {
       // Y-position animation (only when `animate` is true)
@@ -46,7 +46,7 @@ const TictactoeText = forwardRef(({ animate, ...props }, ref) => {
         groupRef.current.position,
         { y: groupRef.current.position.y }, // Starting position
         {
-          y: groupRef.current.position.y + `${yAnimation}`, // Ending position
+          y: groupRef.current.position.y + `${yAnimation} `, // Ending position
           duration: 4,
           delay: 0.1,
 

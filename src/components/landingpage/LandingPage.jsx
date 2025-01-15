@@ -114,7 +114,7 @@ import Link from "next/link";
 import Connecttowallet from "./Connecttowallet";
 
 const RotatingSphere = () => {
-  const texture = useLoader(TextureLoader, "/bg8.jpg");
+  const texture = useLoader(TextureLoader, "/mainbg.jpg");
   const sphereRef = useRef();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -131,7 +131,7 @@ const RotatingSphere = () => {
     };
   }, []);
 
-  const setArgs = isSmallScreen ? [300, 60, 400] : [800, 800, 800];
+  const setArgs = isSmallScreen ? [700, 1000, 1000] : [950, 1500, 1500];
 
   useFrame(() => {
     if (sphereRef.current) {
