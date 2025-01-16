@@ -1,7 +1,27 @@
+"use client";
+import Loader from "@/components/landingpage/Loader";
+import { useEffect, useState } from "react";
+
 export default function Loading() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    // Set a timer to hide the loader after 10 seconds
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 10000); // 10 seconds
+
+    // Clear the timer if the component unmounts
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isVisible) {
+    return null; // Hide the loader after 10 seconds
+  }
+
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-900 ">
-      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+    <div className="flex items-center justify-center h-screen bg-gray-900">
+      <Loader />
     </div>
   );
 }
