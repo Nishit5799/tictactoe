@@ -9,6 +9,7 @@ import CheckVaultText from "@/components/landingpage/CheckVaultText";
 import Pvp from "@/components/landingpage/Pvp";
 import Pvsai from "@/components/landingpage/Pvsai";
 import Link from "next/link";
+import Loader from "@/components/landingpage/Loader";
 
 const RotatingSphere = () => {
   const texture = useLoader(TextureLoader, "/mainbg.jpg");
@@ -28,7 +29,6 @@ const RotatingSphere = () => {
     };
   }, []);
 
-  // const setArgs = isSmallScreen ? [300, 60, 400] : [800, 800, 800];
   const setArgs = isSmallScreen ? [700, 1000, 1000] : [950, 1500, 1500];
   useFrame(() => {
     if (sphereRef.current) {
@@ -45,6 +45,7 @@ const RotatingSphere = () => {
 };
 
 const WalletPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
@@ -55,14 +56,22 @@ const WalletPage = () => {
     window.addEventListener("resize", handleResize);
     handleResize();
 
+    // Simulate a loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // Adjust the duration as needed
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      clearTimeout(timer);
     };
   }, []);
 
   const fov = isSmallScreen ? 132 : 100;
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="w-full h-screen bg-black text-white relative">
       <Canvas camera={{ position: [-0.3, 0.5, 5], fov: fov }}>
         <directionalLight position={[0, 5, 5]} intensity={4} color={"white"} />

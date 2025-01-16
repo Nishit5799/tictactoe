@@ -10,6 +10,7 @@ import Coin from "@/components/landingpage/Coin";
 import DepositText from "@/components/landingpage/DepositText";
 import WithdrawText from "@/components/landingpage/WithdrawText";
 import TransactionText from "@/components/landingpage/TransactionText";
+import Loader from "@/components/landingpage/Loader";
 
 const RotatingSphere = () => {
   const texture = useLoader(TextureLoader, "/mainbg.jpg");
@@ -35,6 +36,7 @@ const RotatingSphere = () => {
       sphereRef.current.rotation.y += 0.0009;
     }
   });
+
   return (
     <mesh ref={sphereRef}>
       <sphereGeometry args={setArgs} />
@@ -44,6 +46,7 @@ const RotatingSphere = () => {
 };
 
 const Vault = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [popupType, setPopupType] = useState(null); // 'deposit' or 'withdraw'
   const popupRef = useRef(null);
@@ -56,8 +59,14 @@ const Vault = () => {
     window.addEventListener("resize", handleResize);
     handleResize();
 
+    // Simulate a loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // Adjust duration as necessary
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -75,6 +84,12 @@ const Vault = () => {
 
   const closePopup = () => setPopupType(null);
 
+  // Render the Loader if the content is still loading
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  // Render the main content after loading is complete
   return (
     <div
       className={`w-full h-screen bg-black text-white relative ${
@@ -127,7 +142,6 @@ const Vault = () => {
         className="absolute top-[60%] sm:w-[12%] w-full h-[12%] sm:h-[9%] cursor-pointer  sm:left-[56%] left-[133%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-110"
         onClick={() => setPopupType("deposit")}
       >
-        {/* <h1 className="font-choco text-xl">Deposit</h1> */}
         <Canvas>
           <DepositText />
         </Canvas>
@@ -136,13 +150,11 @@ const Vault = () => {
         className="absolute top-[70%] sm:w-[17%] sm:h-[9%] w-full h-[12%] cursor-pointer sm:left-[59.5%] left-[120.7%] mt-4 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-110"
         onClick={() => setPopupType("withdraw")}
       >
-        {/* <h1 className="font-choco text-xl">Withdraw</h1> */}
         <Canvas>
           <WithdrawText />
         </Canvas>
       </div>
       <div className="absolute top-[80%] sm:w-[25%] w-full h-[12%] sm:h-[9%] sm:left-[65%] left-[120%] cursor-pointer sm:mt-5 mt-8 transform -translate-x-[120%] -translate-y-1/2 p-4 rounded-2xl shadow-lg text-center transition-all duration-300 ease-in-out hover:scale-110">
-        {/* <h1 className="font-choco text-xl">Transaction History</h1> */}
         <Canvas>
           <TransactionText />
         </Canvas>

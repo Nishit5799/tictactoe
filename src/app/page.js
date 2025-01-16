@@ -1,12 +1,22 @@
-import LandingPage from "@/components/landingpage/LandingPage";
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
-const page = () => {
-  return (
-    <>
-      <LandingPage />
-    </>
-  );
+import LandingPage from "@/components/landingpage/LandingPage";
+import Loader from "@/components/landingpage/Loader";
+
+const Page = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading process or any async operation
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // Adjust the timeout to match your needs
+
+    return () => clearTimeout(timer); // Cleanup the timeout
+  }, []);
+
+  return <>{isLoading ? <Loader /> : <LandingPage />}</>;
 };
 
-export default page;
+export default Page;
