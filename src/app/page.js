@@ -11,7 +11,7 @@ const Page = () => {
     // Simulate loading process or any async operation
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // Adjust the timeout to match your needs
+    }, 5000); // Adjust the timeout to match your needs
 
     return () => clearTimeout(timer); // Cleanup the timeout
   }, []);

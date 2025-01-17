@@ -59,7 +59,7 @@ const WalletPage = () => {
     // Simulate a loading delay
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // Adjust the duration as needed
+    }, 5000); // Adjust the duration as needed
 
     return () => {
       window.removeEventListener("resize", handleResize);

@@ -62,7 +62,7 @@ const Vault = () => {
     // Simulate a loading delay
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // Adjust duration as necessary
+    }, 5000); // Adjust duration as necessary
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -119,7 +119,7 @@ const Vault = () => {
             </h2>
             <input
               type="number"
-              className="sm:w-full w-[77%] text-black px-4 py-2 sm:p-3 border font-choco border-gray-300 rounded-md sm:text-lg text-sm mb-4"
+              className="sm:w-full w-[77%] text-black px-5 py-1 sm:p-3 border font-choco border-gray-300 rounded-md sm:text-lg text-sm mb-4"
               placeholder="Enter amount"
             />
             <button
