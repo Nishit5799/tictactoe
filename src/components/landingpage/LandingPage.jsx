@@ -3,7 +3,6 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import React, { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three";
 import { DoubleSide } from "three";
-import gsap from "gsap";
 
 import TictactoeText from "./TictactoeText";
 import Link from "next/link";
@@ -45,6 +44,8 @@ const RotatingSphere = () => {
 
 const LandingPage = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isMusicOn, setIsMusicOn] = useState(false);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,6 +62,15 @@ const LandingPage = () => {
 
   const fov = isSmallScreen ? 132 : 100;
 
+  const toggleMusic = () => {
+    if (isMusicOn) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsMusicOn(!isMusicOn);
+  };
+
   return (
     <div className="w-full h-screen bg-black text-white relative">
       <Canvas camera={{ position: [-0.3, 0.5, 5], fov: fov }}>
@@ -70,7 +80,8 @@ const LandingPage = () => {
         <RotatingSphere />
         <TictactoeText animate={false} />
       </Canvas>
-      <div className="absolute left-1/2 transform -translate-x-1/2 top-[60%] sm:w-[28%] rounded-full sm:h-[15%] w-[75%] h-[5%] bg-slate-900/50 hover:bg-slate-900/90  transition-all duration-300 hover:scale-105  ">
+
+      <div className="absolute left-1/2 transform -translate-x-1/2 top-[60%] sm:w-[28%] rounded-full sm:h-[15%] w-[75%] h-[5%] bg-slate-900/50 hover:bg-slate-900/90 transition-all duration-300 hover:scale-105">
         <Link href="/enterwallet">
           <Canvas>
             <Connecttowallet />
