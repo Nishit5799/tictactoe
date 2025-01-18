@@ -12,9 +12,9 @@ export default function Connecttowallet(props) {
       // Rotation animation (applies to all instances)
       gsap.fromTo(
         groupRef.current.rotation,
-        { y: -0.04 },
+        { y: -0.015 },
         {
-          y: 0.04,
+          y: 0.015,
           duration: 5,
           repeat: -1,
           yoyo: true,
@@ -36,9 +36,9 @@ export default function Connecttowallet(props) {
     };
   }, []);
 
-  const xPosition = isSmallScreen ? [-26, -1, -1.5] : [-12.214, -0.3, -0.038];
+  const xPosition = isSmallScreen ? [-26, -1, -1.5] : [-27.214, -1.3, -0.038];
 
-  const scaleWallet = isSmallScreen ? 3.6 : 1.7;
+  const scaleWallet = isSmallScreen ? 3.6 : 3.7;
   return (
     <>
       <ambientLight intensity={0.1} />
