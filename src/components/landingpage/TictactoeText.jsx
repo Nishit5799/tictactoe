@@ -38,7 +38,7 @@ const TictactoeText = forwardRef(({ animate, ...props }, ref) => {
     }
   }, []);
 
-  const yAnimation = isSmallScreen ? 1.8 : 1.5;
+  const yAnimation = isSmallScreen ? 2.9 : 1.5;
   useEffect(() => {
     if (groupRef.current && animate) {
       // Y-position animation (only when `animate` is true)
