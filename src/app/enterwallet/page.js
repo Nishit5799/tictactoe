@@ -51,6 +51,9 @@ const WalletPage = () => {
   const [isPvpPopupVisible, setIsPvpPopupVisible] = useState(false);
   const [betAmount, setBetAmount] = useState("");
   const popupRef = useRef(null);
+  const vaultRef = useRef(null);
+  const pvpRef = useRef(null);
+  const pvsaiRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,6 +74,25 @@ const WalletPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Animate vault, pvp, and pvsai elements from downward to upward
+    const tl = gsap.timeline({
+      defaults: { duration: 1.5, ease: "power4.out" },
+    });
+    tl.fromTo(
+      vaultRef.current,
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1 },
+      0.8
+    )
+      .fromTo(pvpRef.current, { y: 50, opacity: 0 }, { y: 0, opacity: 1 }, 1.5)
+      .fromTo(
+        pvsaiRef.current,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1 },
+        1.9
+      );
+  }, [isLoading]);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -138,8 +160,16 @@ const WalletPage = () => {
         <div className="absolute inset-0 bg-slate-900/50 flex items-center justify-center z-50">
           <div
             ref={popupRef}
-            className="bg-[url('/bg.jpg')] bg-cover bg-center text-white p-8 rounded-xl shadow-lg w-[94%] sm:w-[40%] text-center"
+            className="relative bg-[url('/bg.jpg')] bg-cover bg-center text-white p-8 rounded-xl shadow-lg w-[94%] sm:w-[40%] text-center"
           >
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-white    p-2 focus:outline-none transition-transform duration-200"
+              onClick={closePopupWithAnimation}
+            >
+              ✖
+            </button>
+
             <h2 className="font-choco sm:text-2xl text-lg mb-4">
               Enter Bet Amount
             </h2>
@@ -163,7 +193,17 @@ const WalletPage = () => {
       {/* Main Content */}
       <div className="absolute top-2/3 left-1/2 transform landing py-10 -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-lg w-[75%] sm:w-[21%] flex items-center justify-center">
         <div className="top-1/2 w-full h-full flex flex-col items-center justify-center ">
-          <div className="w-[70%] vault sm:w-[55%] h-[9.5vh] cursor-pointer hover:scale-110 transition-all duration:700 ease-in">
+          <div
+            ref={vaultRef}
+            className="w-[70%] vault sm:w-[55%] h-[9.5vh] cursor-pointer"
+            style={{
+              transition: "transform 0.3s ease",
+            }}
+            onMouseEnter={() =>
+              (vaultRef.current.style.transform = "scale(1.1)")
+            }
+            onMouseLeave={() => (vaultRef.current.style.transform = "scale(1)")}
+          >
             <Link href="/enterwallet/vault">
               <Canvas>
                 <CheckVaultText />
@@ -171,14 +211,30 @@ const WalletPage = () => {
             </Link>
           </div>
           <div
-            className="w-[70%] sm:w-[55%] h-[10vh] cursor-pointer hover:scale-110 transition-all duration:300"
+            className="w-[70%] sm:w-[55%] h-[10vh] cursor-pointer"
+            style={{
+              transition: "transform 0.3s ease",
+            }}
+            ref={pvpRef}
+            onMouseEnter={() => (pvpRef.current.style.transform = "scale(1.1)")}
+            onMouseLeave={() => (pvpRef.current.style.transform = "scale(1)")}
             onClick={() => setIsPvpPopupVisible(true)}
           >
             <Canvas>
               <Pvp />
             </Canvas>
           </div>
-          <div className="w-[70%] sm:w-[55%] h-[10vh] hover:scale-110 transition-all duration:300">
+          <div
+            ref={pvsaiRef}
+            className="w-[70%] sm:w-[55%] h-[10vh] cursor-pointer"
+            style={{
+              transition: "transform 0.3s ease",
+            }}
+            onMouseEnter={() =>
+              (pvsaiRef.current.style.transform = "scale(1.1)")
+            }
+            onMouseLeave={() => (pvsaiRef.current.style.transform = "scale(1)")}
+          >
             <Canvas>
               <Pvsai />
             </Canvas>

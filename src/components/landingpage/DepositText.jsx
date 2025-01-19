@@ -35,9 +35,10 @@ export default function DepositText(props) {
       );
     }
   }, []);
+  // const scale = isSmallScreen ? [2.9, 2.5, 2.9] : 4.5;
   const scale = isSmallScreen ? [2.9, 2.5, 2.9] : 4.5;
   const xPosition = isSmallScreen
-    ? [-13.305, -1.083, 0.7]
+    ? [-7.305, -1.083, 0.7]
     : [-12.305, -1.083, 0.7];
   return (
     <>
