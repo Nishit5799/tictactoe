@@ -10,8 +10,10 @@ import WinLine from "./WinLine";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Cross from "./Cross";
+import Loader from "./Loader";
 
 function MainGame() {
+  const [isLoading, setIsLoading] = useState(true);
   const [gameState, setGameState] = useState(Array(9).fill(null));
   const [isXTurn, setIsXTurn] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -80,7 +82,7 @@ function MainGame() {
       isXTurn ? "Player 1's Turn" : "Player 2's Turn",
       {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 7000,
         theme: "dark",
         hideProgressBar: true,
         className: "centered-toast",
@@ -208,8 +210,12 @@ function MainGame() {
     window.addEventListener("resize", handleResize);
     handleResize();
 
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
     return () => {
       window.removeEventListener("resize", handleResize);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -231,6 +237,10 @@ function MainGame() {
 
   const fov = isSmallScreen ? 106 : 100;
   const boardPosition = isSmallScreen ? [0, 0.1, 0.2] : [0, 2, 0.7];
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="w-full h-screen relative">

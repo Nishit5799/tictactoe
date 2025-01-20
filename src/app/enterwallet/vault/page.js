@@ -150,7 +150,7 @@ const Vault = () => {
     >
       {/* Back Button */}
       <Link href="/enterwallet">
-        <button className="absolute top-4 left-4 z-[1000000] font-choco  text-white/70 px-4 py-2 ">
+        <button className="absolute sm:top-4 sm:left-4 top-10 left-4 z-[1000000] font-choco  text-white/70 px-4 py-2 ">
           Back
         </button>
       </Link>

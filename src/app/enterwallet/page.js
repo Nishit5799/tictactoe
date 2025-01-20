@@ -235,9 +235,11 @@ const WalletPage = () => {
             }
             onMouseLeave={() => (pvsaiRef.current.style.transform = "scale(1)")}
           >
-            <Canvas>
-              <Pvsai />
-            </Canvas>
+            <Link href="/enterwallet/maingame">
+              <Canvas>
+                <Pvsai />
+              </Canvas>
+            </Link>
           </div>
         </div>
       </div>

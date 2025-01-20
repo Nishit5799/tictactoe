@@ -1,11 +1,12 @@
 "use client";
-import { Environment } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 
 const Background = () => {
   const sphereRef = useRef();
-
+  const texture = useTexture("/bg1.png");
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
@@ -24,8 +25,7 @@ const Background = () => {
   useFrame(() => {
     if (sphereRef.current) {
       // Rotate the sphere
-      sphereRef.current.rotation.y += 0.0009; // Adjust speed of rotation
-      sphereRef.current.rotation.x += 0.0002; // Add slight tilt for dynamic effect
+      sphereRef.current.rotation.y += 0.0019;
     }
   });
 
@@ -33,22 +33,14 @@ const Background = () => {
 
   return (
     <>
-      {/* Add the rotating background sphere */}
       <mesh ref={sphereRef}>
         <sphereGeometry args={sphereGeo} />
         <meshStandardMaterial
-          // side={THREE.DoubleSide} // Enable rendering both sides
-          // map={texture} // Add star texture
+          side={THREE.DoubleSide}
+          map={texture}
           transparent
         />
       </mesh>
-
-      {/* HDRI Environment */}
-      <Environment
-        files="/bg8.hdr" // Replace with the path to your HDRI file
-        background // Use HDRI as background
-        blur={0} // Set blur if desired
-      />
     </>
   );
 };
